@@ -1,0 +1,158 @@
+api_key = "bPjfHjUnjoKneMy2JZNcYAnHWB9G5nQ5hem8h8R8pWyrghlf9puJZ74FGIl5U0EJ"
+api_secret = "kwlcaGTZezSY8wEeLXwJHWeMPoTCjPJAXGgkOyTllsO0TSE4F7FgvCPDmRa8p1OR"
+
+# libs
+
+import pandas as pd
+import numpy as np
+from binance.client import *
+from binance.enums import *
+
+import os
+import talib
+import requests
+import numpy as np
+import pandas as pd
+from datetime import datetime
+from fastapi import Request
+import json
+
+# Define Consts
+
+SYMBOL_TYPE_SPOT = 'SPOT'
+ORDER_STATUS_NEW = 'NEW'
+ORDER_STATUS_PARTIALLY_FILLED = 'PARTIALLY_FILLED'
+ORDER_STATUS_FILLED = 'FILLED'
+ORDER_STATUS_CANCELED = 'CANCELED'
+ORDER_STATUS_PENDING_CANCEL = 'PENDING_CANCEL'
+ORDER_STATUS_REJECTED = 'REJECTED'
+ORDER_STATUS_EXPIRED = 'EXPIRED'
+
+KLINE_INTERVAL_1MINUTE = '1m'
+KLINE_INTERVAL_3MINUTE = '3m'
+KLINE_INTERVAL_5MINUTE = '5m'
+KLINE_INTERVAL_15MINUTE = '15m'
+KLINE_INTERVAL_30MINUTE = '30m'
+KLINE_INTERVAL_1HOUR = '1h'
+KLINE_INTERVAL_2HOUR = '2h'
+KLINE_INTERVAL_4HOUR = '4h'
+KLINE_INTERVAL_6HOUR = '6h'
+KLINE_INTERVAL_8HOUR = '8h'
+KLINE_INTERVAL_12HOUR = '12h'
+KLINE_INTERVAL_1DAY = '1d'
+KLINE_INTERVAL_3DAY = '3d'
+KLINE_INTERVAL_1WEEK = '1w'
+KLINE_INTERVAL_1MONTH = '1M'
+
+SIDE_BUY = 'BUY'
+SIDE_SELL = 'SELL'
+
+ORDER_TYPE_LIMIT = 'LIMIT'
+ORDER_TYPE_MARKET = 'MARKET'
+ORDER_TYPE_STOP_LOSS = 'STOP_LOSS'
+ORDER_TYPE_STOP_LOSS_LIMIT = 'STOP_LOSS_LIMIT'
+ORDER_TYPE_TAKE_PROFIT = 'TAKE_PROFIT'
+ORDER_TYPE_TAKE_PROFIT_LIMIT = 'TAKE_PROFIT_LIMIT'
+ORDER_TYPE_LIMIT_MAKER = 'LIMIT_MAKER'
+
+TIME_IN_FORCE_GTC = 'GTC'
+TIME_IN_FORCE_IOC = 'IOC'
+TIME_IN_FORCE_FOK = 'FOK'
+
+ORDER_RESP_TYPE_ACK = 'ACK'
+ORDER_RESP_TYPE_RESULT = 'RESULT'
+ORDER_RESP_TYPE_FULL = 'FULL'
+
+# For accessing the data returned by Client.aggregate_trades().
+AGG_ID = 'a'
+AGG_PRICE = 'p'
+AGG_QUANTITY = 'q'
+AGG_FIRST_TRADE_ID = 'f'
+AGG_LAST_TRADE_ID = 'l'
+AGG_TIME = 'T'
+AGG_BUYER_MAKES = 'm'
+AGG_BEST_MATCH = 'M'
+# client = Client("api_key", "api_secret", {"verify": False, "timeout": 20})
+# Send API Keys
+client = Client(api_key, api_secret)
+
+# Set Test Endpoint
+client.API_URL = 'https://testnet.binance.vision/api'
+
+
+def STime():
+    print(client.get_server_time())
+
+
+# connect to api
+
+
+# Scientific notation Convert
+def SciConvert(amount):
+    amount = f'{amount:-17.8f}'
+    return amount
+
+
+def allprices():
+    prices = client.get_all_tickers()
+
+
+def avg():
+    avg_price = client.get_avg_price(symbol='BNBBTC')
+    return avg_price
+
+
+# order type
+# def ordertype(type):
+#  if (type=="GTC"):
+
+#  elif (type=="IOC"):
+
+#  elif(type=="FOK") :
+
+def TestOrder(price, quantity, symbol):
+    order = client.create_test_order(
+        symbol='BNBBTC',
+        side=SIDE_BUY,
+        type=ORDER_TYPE_LIMIT,
+        timeInForce=TIME_IN_FORCE_GTC,
+        quantity=100,
+        price='0.00001')
+
+
+def CheckBalance():
+    balance = client.get_asset_balance(asset='BTC')
+
+
+def AccountStatus():
+    status = client.get_account_status()
+
+
+def MarketBuy(symbol, quantity):
+    order = client.order_market_buy(
+        symbol='BNBBTC',
+        quantity=100)
+
+def MarketSell(symbol, quantity):
+    order = client.order_market_sell(
+        symbol='BNBBTC',
+        quantity=100)
+
+def LimitSell(symbol, quantity, price):
+    order = client.order_limit_buy(
+        symbol='BNBBTC',
+        quantity=100,
+        price='0.00001')
+
+
+def LimitBuy(symbol, quantity, price):
+    order = client.order_limit_sell(
+        symbol='BNBBTC',
+        quantity=100,
+        price='0.00001')
+def AccountInfo():
+    info = client.get_account()
+    print(info)
+
+def GetBalance(asset):
+    balance = client.get_asset_balance(asset='BTC')
